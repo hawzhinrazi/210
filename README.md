@@ -1,24 +1,28 @@
 
- # Arduino Pattern Game Diagram
+ # 100% Accurate Project 210 Activity Diagram
 
 ```mermaid
 graph TD
-    Start([Start Arduino Loop]) --> MainMenu{Game State}
+    Start([Start Arduino Loop]) --> LEDTest[1. LED Sequential Test]
     
-    MainMenu -->|Create Pattern| Step1[creatpatroon]
-    Step1 -->|Generate random LED sequence| Step2[Save pattern to array]
-    Step2 --> Transition1((Go to Show))
+    LEDTest --> RedOn[Red LED HIGH<br>Delay 500ms -> LOW]
+    RedOn --> BlueOn[Blue LED HIGH<br>Delay 500ms -> LOW]
+    BlueOn --> YellowOn[Yellow LED HIGH<br>Delay 500ms -> LOW]
+    YellowOn --> GreenOn[Green LED HIGH<br>Delay 500ms -> LOW]
     
-    MainMenu -->|Display Pattern| Step3[showpatroon]
-    Step3 -->|Blink LEDs in order| Step4[Play buzzer tones]
-    Step4 --> Transition2((Go to Check))
+    GreenOn --> ButtonCheck{2. Check Buttons<br>Which button is LOW?}
     
-    MainMenu -->|Player Turn| Step5[check]
-    Step5 -->|Read button inputs| Step6{Is input correct?}
+    ButtonCheck -->|RED BUTTON A5| ActionRed[Turn RED LED HIGH<br>Play 1000Hz Tone]
+    ButtonCheck -->|BLUE BUTTON 12| ActionBlue[Turn BLUE LED HIGH<br>Play 1500Hz Tone]
+    ButtonCheck -->|YELLOW BUTTON A4| ActionYellow[Turn YELLOW LED HIGH<br>Play 2000Hz Tone]
+    ButtonCheck -->|GREEN BUTTON 11| ActionGreen[Turn GREEN LED HIGH<br>Play 2500Hz Tone]
+    ButtonCheck -->|NO BUTTON| ActionNone[Turn ALL LEDs LOW<br>noTone Buzzer]
     
-    Step6 -- Yes --> Step7[Next level / Speed up]
-    Step7 --> Step1
+    ActionRed --> LoopEnd[Delay 50ms]
+    ActionBlue --> LoopEnd
+    ActionYellow --> LoopEnd
+    ActionGreen --> LoopEnd
+    ActionNone --> LoopEnd
     
-    Step6 -- No --> Step8[Game Over sound / Reset]
-    Step8 --> Start
+    LoopEnd --> Start
 ```
