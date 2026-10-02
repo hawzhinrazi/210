@@ -1,71 +1,24 @@
-#define RED_LED_PIN 7
-#define YELLOW_LED_PIN 6
-#define GREEN_LED_PIN 10
-#define BLUE_LED_PIN 9
 
-#define RED_BUTTON_PIN A5
-#define YELLOW_BUTTON_PIN A4
-#define GREEN_BUTTON_PIN 11
-#define BLUE_BUTTON_PIN 12
+ # Arduino Pattern Game Diagram
 
-#define BUZZER_PIN 8
-
-void setup() {
-  pinMode(RED_LED_PIN, OUTPUT);
-  pinMode(YELLOW_LED_PIN, OUTPUT);
-  pinMode(GREEN_LED_PIN, OUTPUT);
-  pinMode(BLUE_LED_PIN, OUTPUT);
-
-  pinMode(RED_BUTTON_PIN, INPUT_PULLUP);
-  pinMode(YELLOW_BUTTON_PIN, INPUT_PULLUP);
-  pinMode(GREEN_BUTTON_PIN, INPUT_PULLUP);
-  pinMode(BLUE_BUTTON_PIN, INPUT_PULLUP);
-
-  pinMode(BUZZER_PIN, OUTPUT);
-}
-
-void loop() {
-  // Test: leds gaan een voor een aan
-  digitalWrite(RED_LED_PIN, HIGH);
-  delay(500);
-  digitalWrite(RED_LED_PIN, LOW);
-
-  digitalWrite(BLUE_LED_PIN, HIGH);
-  delay(500);
-  digitalWrite(BLUE_LED_PIN, LOW);
-
-  digitalWrite(YELLOW_LED_PIN, HIGH);
-  delay(500);
-  digitalWrite(YELLOW_LED_PIN, LOW);
-
-  digitalWrite(GREEN_LED_PIN, HIGH);
-  delay(500);
-  digitalWrite(GREEN_LED_PIN, LOW);
-
-  // Test de druktoetsen
-  if (digitalRead(RED_BUTTON_PIN) == LOW) {
-    digitalWrite(RED_LED_PIN, HIGH);
-    tone(BUZZER_PIN, 1000);
-  }
-  else if (digitalRead(BLUE_BUTTON_PIN) == LOW) {
-    digitalWrite(BLUE_LED_PIN, HIGH);
-    tone(BUZZER_PIN, 1500);
-  }
-  else if (digitalRead(YELLOW_BUTTON_PIN) == LOW) {
-    digitalWrite(YELLOW_LED_PIN, HIGH);
-    tone(BUZZER_PIN, 2000);
-  }
-  else if (digitalRead(GREEN_BUTTON_PIN) == LOW) {
-    digitalWrite(GREEN_LED_PIN, HIGH);
-    tone(BUZZER_PIN, 2500);
-  }
-  else {
-    noTone(BUZZER_PIN);
-    digitalWrite(RED_LED_PIN, LOW);
-    digitalWrite(BLUE_LED_PIN, LOW);
-    digitalWrite(YELLOW_LED_PIN, LOW);
-    digitalWrite(GREEN_LED_PIN, LOW);
-  }
-
-  delay(50);
-}
+```mermaid
+graph TD
+    Start([Start Arduino Loop]) --> MainMenu{Game State}
+    
+    MainMenu -->|Create Pattern| Step1[creatpatroon]
+    Step1 -->|Generate random LED sequence| Step2[Save pattern to array]
+    Step2 --> Transition1((Go to Show))
+    
+    MainMenu -->|Display Pattern| Step3[showpatroon]
+    Step3 -->|Blink LEDs in order| Step4[Play buzzer tones]
+    Step4 --> Transition2((Go to Check))
+    
+    MainMenu -->|Player Turn| Step5[check]
+    Step5 -->|Read button inputs| Step6{Is input correct?}
+    
+    Step6 -- Yes --> Step7[Next level / Speed up]
+    Step7 --> Step1
+    
+    Step6 -- No --> Step8[Game Over sound / Reset]
+    Step8 --> Start
+```
