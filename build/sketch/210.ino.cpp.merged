@@ -1,0 +1,20 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\96475\\OneDrive\\Desktop\\210\\210.ino"
+
+// Alleen de buzzer testen
+
+#define BUZZER_PIN 8
+
+void setup() {
+  pinMode(BUZZER_PIN, OUTPUT);
+}
+
+void loop() {
+  tone(BUZZER_PIN, 1000);
+  delay(1000);
+
+  noTone(BUZZER_PIN);
+  delay(1000);
+}
+
+
